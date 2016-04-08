@@ -1,0 +1,41 @@
+#!/usr/bin/python
+
+import netrc
+import sys
+from optparse import OptionParser
+
+
+class Application:
+    def showHelp(self):
+        print "Usage: %s <machine-name> (login|password)" % sys.argv[0]
+        print
+        print "   Returns the username or password for machine from your ~/.netrc"
+
+    def main(self):
+        if (len(sys.argv) != 3):
+            self.showHelp()
+            if (len(sys.argv) == 1):
+                exit(0)
+            else:
+                exit(1)
+
+        machine = sys.argv[1]
+        attribute = sys.argv[2]
+
+        info = netrc.netrc()
+
+        (login, account, password) = info.authenticators(machine)
+
+        if (attribute == 'login'):
+            print login
+            exit(0)
+        if (attribute == 'password'):
+            print password
+            exit(0)
+
+        self.showHelp()
+        exit(1)
+
+Application().main()
+
+# EOF
